@@ -5,16 +5,17 @@ Generation) sobre trámites públicos de Córdoba: cada respuesta se genera
 únicamente a partir de fragmentos de fuentes oficiales verificadas, y siempre
 se citan esas fuentes.
 
-## Qué está hecho y qué falta (léelo antes de seguir)
-
 **Hecho en este scaffold:**
 - Estructura completa del backend (FastAPI + SQLAlchemy + pgvector)
 - Modelo de datos: `Tramite`, `Requisito`, `FuenteOficial`, `Chunk`
 - Pipeline de RAG completo (`app/services/rag.py`)
 - Endpoints: listar trámites, detalle de un trámite, chat (RAG)
-- 5 trámites cargados como semilla (nombre, categoría, organismo)
-- 1 trámite ("Renovación de licencia de conducir") con contenido real
-  verificado en cordoba.gob.ar, para que puedas probar el flujo completo
+- Los 5 trámites cargados con contenido real, verificado en fuentes oficiales:
+  - Renovación de licencia de conducir - cordoba.gob.ar
+  - Duplicado de DNI - argentina.gob.ar
+  - Partida de nacimiento - registrocivil.cba.gov.ar
+  - Patentamiento vehicular - argentina.gob.ar
+  - Asignación Universal por Hijo - anses.gob.ar
 
 ## Cómo correrlo
 
@@ -48,22 +49,18 @@ pip install -r requirements.txt
 python -m app.seed_data
 ```
 
-Esto crea las tablas (si no existen) y carga los 5 trámites, con contenido
-completo solo para licencia de conducir.
-
 ### 5. Levantar el servidor
 
 ```bash
 uvicorn app.main:app --reload
 ```
 
-Andá a `http://localhost:8000/docs` — FastAPI genera automáticamente
-documentación interactiva (Swagger) de todos los endpoints, para que puedas
-probarlos sin necesidad de un frontend todavía.
+En `http://localhost:8000/docs` FastAPI genera automáticamente
+documentación interactiva (Swagger) de todos los endpoints.
 
 ### 6. Probar el RAG
 
-En `/docs`, probá `POST /api/chat` con body:
+En `/docs`, se puede probar, por ejemplo, `POST /api/chat` con body:
 ```json
 {
   "tramite_id": 1,
